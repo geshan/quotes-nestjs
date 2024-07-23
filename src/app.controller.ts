@@ -12,7 +12,7 @@ export class AppController {
 
   @Get('/quotes')
   getQuotes(
-    @Query('author', new DefaultValuePipe('martin')) author: string,
+    @Query('author') author: string,
   ): Object {
     const quotes = [
       {
@@ -36,6 +36,10 @@ export class AppController {
         author: 'John Woods'
     },
     ];
-    return {"data": quotes.filter(quote => quote.author.toLocaleLowerCase().includes(author.toLocaleLowerCase()))};
+
+    const filteredQuotes = author ? 
+      quotes.filter(quote => quote.author.toLocaleLowerCase().includes(author.toLocaleLowerCase())) :
+      quotes;
+    return {"data": filteredQuotes};
   }
 }
