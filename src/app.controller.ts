@@ -1,4 +1,4 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, NotFoundException, Query } from '@nestjs/common';
 import { AppService } from './app.service';
 
 @Controller()
@@ -40,6 +40,10 @@ export class AppController {
     const filteredQuotes = author ?
       quotes.filter(quote => quote.author.toLocaleLowerCase().includes(author.toLocaleLowerCase())) :
       quotes;
+    
+    if (filteredQuotes.length === 0) {
+      throw new NotFoundException('No quotes found for the given author');
+    }
     return { "data": filteredQuotes };
   }
 }
